@@ -7,12 +7,12 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-// Õðàíåíèå ïîäêëþ÷åííûõ êëèåíòîâ
+// Ã•Ã°Ã Ã­Ã¥Ã­Ã¨Ã¥ Ã¯Ã®Ã¤ÃªÃ«Ã¾Ã·Ã¥Ã­Ã­Ã»Ãµ ÃªÃ«Ã¨Ã¥Ã­Ã²Ã®Ã¢
 const clients = new Set();
 
-// Îáðàáîòêà WebSocket ñîåäèíåíèé
+// ÃŽÃ¡Ã°Ã Ã¡Ã®Ã²ÃªÃ  WebSocket Ã±Ã®Ã¥Ã¤Ã¨Ã­Ã¥Ã­Ã¨Ã©
 wss.on('connection', (ws) => {
     console.log('New WebSocket connection');
     clients.add(ws);
@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log('Received:', message.toString());
 
-        // Îòïðàâêà ñîîáùåíèÿ âñåì ïîäêëþ÷åííûì êëèåíòàì, êðîìå îòïðàâèòåëÿ
+        // ÃŽÃ²Ã¯Ã°Ã Ã¢ÃªÃ  Ã±Ã®Ã®Ã¡Ã¹Ã¥Ã­Ã¨Ã¿ Ã¢Ã±Ã¥Ã¬ Ã¯Ã®Ã¤ÃªÃ«Ã¾Ã·Ã¥Ã­Ã­Ã»Ã¬ ÃªÃ«Ã¨Ã¥Ã­Ã²Ã Ã¬, ÃªÃ°Ã®Ã¬Ã¥ Ã®Ã²Ã¯Ã°Ã Ã¢Ã¨Ã²Ã¥Ã«Ã¿
         clients.forEach((client) => {
             if (client !== ws && client.readyState === WebSocket.OPEN) {
                 client.send(message.toString());
@@ -34,12 +34,12 @@ wss.on('connection', (ws) => {
     });
 });
 
-// Ïðîñòîé API ýíäïîèíò äëÿ ïðîâåðêè ñòàòóñà ñåðâåðà
+// ÃÃ°Ã®Ã±Ã²Ã®Ã© API Ã½Ã­Ã¤Ã¯Ã®Ã¨Ã­Ã² Ã¤Ã«Ã¿ Ã¯Ã°Ã®Ã¢Ã¥Ã°ÃªÃ¨ Ã±Ã²Ã Ã²Ã³Ã±Ã  Ã±Ã¥Ã°Ã¢Ã¥Ã°Ã 
 app.get('/status', (req, res) => {
     res.json({ status: 'Server is running', clientsCount: clients.size });
 });
 
-// Çàïóñê ñåðâåðà
+// Ã‡Ã Ã¯Ã³Ã±Ãª Ã±Ã¥Ã°Ã¢Ã¥Ã°Ã 
 server.listen(PORT, () => {
     console.log(`Server runned on http://${ip.address()}:${PORT}`);
     console.log(`WebSocket availible on ws://${ip.address()}:${PORT}`);
